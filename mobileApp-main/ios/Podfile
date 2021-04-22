@@ -1,0 +1,57 @@
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/passbase/zoomauthentication-cocoapods-specs.git'
+source 'https://github.com/passbase/cocoapods-specs.git'
+source 'https://github.com/passbase/microblink-cocoapods-specs.git'
+
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+
+
+platform :ios, '11.0'
+
+target 'duniapay' do
+  config = use_native_modules!
+
+  use_react_native!(:path => config["reactNativePath"])
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod 'Intercom'
+
+  pod 'OpenSSL-Universal', '~>1.0.2.20'
+  pod 'FBSDKCoreKit', :modular_headers => true
+  pod 'FBSDKLoginKit', :modular_headers => true
+  pod 'FBSDKShareKit', :modular_headers => true
+  pod 'VGSCollectSDK'
+  pod 'VGSShowSDK'
+  pod 'GoogleSignIn', '~> 5.0.2'
+  
+  target 'duniapayTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+
+  # Enables Flipper.
+  #
+  # Note that if you have use_frameworks! enabled, Flipper will not work and
+  # you should disable these next few lines.
+  use_flipper!
+  post_install do |installer|
+    flipper_post_install(installer)
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
+  end
+end
+
+target 'duniapay-tvOS' do
+  # Pods for duniapay-tvOS
+
+  target 'duniapay-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+end
