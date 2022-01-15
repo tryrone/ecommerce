@@ -1,1 +1,0 @@
-# duniapay-mobile
